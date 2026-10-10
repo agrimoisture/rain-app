@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>附近有沒有下雨</title>
+<meta name="description" content="查附近中央氣象署雨量站是否正在下雨">
+<meta name="theme-color" content="#1565c0">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="下雨了沒">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <h1>☔ 附近有沒有下雨</h1>
+  <button id="refreshBtn" class="icon-btn" title="重新整理" aria-label="重新整理">⟳</button>
+</header>
+
+<main>
+  <section class="card where">
+    <div class="where-row">
+      <div>
+        <div class="label">查詢位置</div>
+        <div id="placeLabel" class="place">尚未定位</div>
+      </div>
+      <button id="locateBtn" class="btn primary">📍 用我的位置</button>
+    </div>
+    <div id="wxNow" class="wxnow" hidden></div>
+    <div id="msg" class="msg" hidden></div>
+    <div class="where-actions">
+      <button id="savePlaceBtn" class="btn small" disabled>☆ 儲存這個位置</button>
+      <button id="toggleMapBtn" class="btn small">🗺 地圖</button>
+    </div>
+    <div id="mapWrap" hidden>
+      <div id="map"></div>
+      <div class="hint">點地圖任一處，可改查那個位置附近的雨量站</div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec-title">最近的 5 個雨量站</h2>
+    <div id="nearList" class="list"><div class="empty">按「用我的位置」，或從下方搜尋、選擇常用地點</div></div>
+  </section>
+
+  <section class="card">
+    <h2 class="sec-title">常用地點</h2>
+    <div id="savedList" class="chips"><span class="empty-inline">還沒有。定位或點地圖後按「儲存這個位置」，例如：田區、公司</span></div>
+  </section>
+
+  <section class="card">
+    <h2 class="sec-title">搜尋雨量站</h2>
+    <input id="searchInput" type="search" placeholder="輸入站名、鄉鎮或縣市，例如：蘇澳、冬山" autocomplete="off">
+    <div id="searchList" class="list compact"></div>
+  </section>
+
+  <footer class="foot">
+    <div id="dataTime">資料載入中…</div>
+    <div>資料來源：中央氣象署開放資料（自動雨量站 O-A0002-001、自動氣象站 O-A0001-001）</div>
+    <div class="small">氣溫、濕度、風取自最近一個有有效資料的氣象站，約每小時更新；風向為風吹來的方向，陣風單位 m/s。</div>
+    <div class="small">判斷規則：近 10 分鐘有雨量 → 正在下雨；近 1 小時有雨量 → 剛下過；其他 → 沒下雨。0.5 mm 以下的微量雨可能測不到。</div>
+    <div class="small">地圖：© OpenStreetMap 貢獻者</div>
+  </footer>
+</main>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script src="app.js"></script>
+</body>
+</html>

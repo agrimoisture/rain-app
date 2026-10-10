@@ -1,0 +1,8 @@
+.venv/
+__pycache__/
+*.tmp
+.env
+server.log
+screenshots/
+public/rain.json
+public/weather.json
