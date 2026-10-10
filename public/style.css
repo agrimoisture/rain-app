@@ -19,6 +19,14 @@ main{max-width:640px;margin:0 auto;padding:12px 12px calc(24px + env(safe-area-i
 .btn.small{padding:6px 10px;font-size:14px}
 .btn:disabled{opacity:.45}
 .msg{margin-top:8px;font-size:14px;color:var(--na);background:var(--nabg);padding:6px 10px;border-radius:8px}
+.msg.info{color:var(--muted);background:var(--bg)}
+[hidden]{display:none !important}
+.addr-form{margin-top:10px}
+.addr-row{display:flex;gap:8px;align-items:center;margin-top:4px}
+.addr-row input{flex:1;min-width:0;width:auto;font-size:16px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--text)}
+.resolved{margin-top:8px;font-size:13px;color:var(--text);background:var(--bg);border-radius:8px;padding:6px 10px;line-height:1.45;white-space:pre-line}
+.pick-hint{font-size:14px;color:var(--text)}
+button.row{width:100%;font:inherit;color:inherit;text-align:left}
 #map{height:240px;border-radius:10px;margin-top:10px}
 .hint{font-size:12px;color:var(--muted);margin-top:4px}
 .sec-title{font-size:15px;margin:4px 2px 8px;color:var(--muted);font-weight:600}
