@@ -29,6 +29,15 @@
       </div>
       <button id="locateBtn" class="btn primary">📍 用我的位置</button>
     </div>
+    <form id="addrForm" class="addr-form" autocomplete="off">
+      <label class="label" for="addrInput">輸入地址、地標或鄉鎮</label>
+      <div class="addr-row">
+        <input id="addrInput" type="text" inputmode="text" enterkeyhint="search" maxlength="80" placeholder="例如：宜蘭縣蘇澳鎮八仙路1號、冬山" autocomplete="off" aria-label="地址、地標或鄉鎮">
+        <button id="addrBtn" class="btn primary" type="submit">查詢</button>
+      </div>
+    </form>
+    <div id="addrPicks" class="list compact" hidden></div>
+    <div id="resolved" class="resolved" hidden></div>
     <div id="wxNow" class="wxnow" hidden></div>
     <div id="msg" class="msg" hidden></div>
     <div class="where-actions">
@@ -43,12 +52,12 @@
 
   <section>
     <h2 class="sec-title">最近的 5 個雨量站</h2>
-    <div id="nearList" class="list"><div class="empty">按「用我的位置」，或從下方搜尋、選擇常用地點</div></div>
+    <div id="nearList" class="list"><div class="empty">輸入地址按「查詢」，或按「用我的位置」</div></div>
   </section>
 
   <section class="card">
     <h2 class="sec-title">常用地點</h2>
-    <div id="savedList" class="chips"><span class="empty-inline">還沒有。定位或點地圖後按「儲存這個位置」，例如：田區、公司</span></div>
+    <div id="savedList" class="chips"><span class="empty-inline">還沒有。定位、查地址或點地圖後按「儲存這個位置」，例如：田區、公司</span></div>
   </section>
 
   <section class="card">
@@ -62,7 +71,7 @@
     <div>資料來源：中央氣象署開放資料（自動雨量站 O-A0002-001、自動氣象站 O-A0001-001）</div>
     <div class="small">氣溫、濕度、風取自最近一個有有效資料的氣象站，約每小時更新；風向為風吹來的方向，陣風單位 m/s。</div>
     <div class="small">判斷規則：近 10 分鐘有雨量 → 正在下雨；近 1 小時有雨量 → 剛下過；其他 → 沒下雨。0.5 mm 以下的微量雨可能測不到。</div>
-    <div class="small">地圖：© OpenStreetMap 貢獻者</div>
+    <div class="small">地圖：© OpenStreetMap 貢獻者。地址查詢使用 OpenStreetMap Nominatim，只在按下「查詢」時送出。</div>
   </footer>
 </main>
 

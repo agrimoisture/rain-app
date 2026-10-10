@@ -1,5 +1,5 @@
 // 簡單的 service worker：介面檔案先用快取，rain.json、weather.json 一律先抓網路（離線時才用舊資料）。
-const CACHE = 'rainapp-v2';
+const CACHE = 'rainapp-v3';
 const SHELL = ['./', 'index.html', 'app.js', 'style.css', 'manifest.json', 'icon-192.png'];
 self.addEventListener('install', (e) => { e.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting())); });
 self.addEventListener('activate', (e) => {
