@@ -112,7 +112,15 @@ def main():
         assert "台北101" in label, label
         assert "台北101" in resolved and "已改查" not in resolved, resolved
         names = pg.eval_on_selector_all(".st .st-name", "els => els.map(e => e.textContent)")
-        assert names[0] == "信義", names
+        assert names[0] == "信義" and len(names) == 3, names
+        assert "最近的 3 個雨量站" in pg.content()
+        assert "最近的 5 個" not in pg.content()
+        order = pg.evaluate("""() => {
+          const saved = document.querySelector('#savedList');
+          const near = document.querySelector('#nearList');
+          return (saved.compareDocumentPosition(near) & Node.DOCUMENT_POSITION_FOLLOWING) !== 0;
+        }""")
+        assert order, "常用地點應在最近雨量站上方"
         assert "28.0" in pg.inner_text("#wxNow"), pg.inner_text("#wxNow")
         pg.screenshot(path=SHOTS + "address_taipei101.png", full_page=True)
 
