@@ -31,7 +31,7 @@ WX = {
 }
 
 HITS = {
-    "宜蘭縣蘇澳鎮": [{"display_name": "蘇澳鎮, 宜蘭縣, 臺灣", "lat": "24.5946244", "lon": "121.8426533"}],
+    "台北101": [{"display_name": "台北101, 信義區, 臺北市, 臺灣", "lat": "25.0338352", "lon": "121.5644995"}],
     "臺北市大安區": [{"display_name": "大安區, 臺北市, 臺灣", "lat": "25.0263", "lon": "121.5435"}],
     "高雄市前鎮區": [{"display_name": "前鎮區, 高雄市, 臺灣", "lat": "22.5900", "lon": "120.3100"}],
     "中山區": [
@@ -92,39 +92,36 @@ def main():
         pg.goto(BASE, wait_until="domcontentloaded")
         pg.wait_for_function("() => document.querySelector('#msg') && !document.querySelector('#msg').hidden", timeout=15000)
         msg = pg.text_content("#msg")
-        assert "查詢" in msg and "地址" in msg, msg
+        assert "查詢" in msg and "地址" in msg and "台北101" in msg, msg
+        assert "八仙" not in pg.content()
         pg.wait_for_function("() => document.activeElement && document.activeElement.id === 'addrInput'", timeout=3000)
         pg.screenshot(path=SHOTS + "denied_geo.png")
+        assert pg.get_attribute("#addrInput", "placeholder") == "例如：台北101、冬山"
 
-        pg.fill("#addrInput", "宜蘭縣蘇澳")
+        pg.fill("#addrInput", "台北")
         pg.wait_for_timeout(400)
         assert calls == [], "輸入時不該呼叫地址服務"
 
-        pg.fill("#addrInput", "宜蘭縣蘇澳鎮八仙路1巷2弄3號")
+        pg.fill("#addrInput", "台北101")
         pg.click("#addrBtn")
         pg.wait_for_function("() => document.querySelector('#resolved') && !document.querySelector('#resolved').hidden", timeout=15000)
         qs = [q for _, q in calls]
-        assert qs == ["宜蘭縣蘇澳鎮八仙路1巷2弄3號", "宜蘭縣蘇澳鎮八仙路", "宜蘭縣蘇澳鎮"], qs
-        for a, c in zip(calls, calls[1:]):
-            assert c[0] - a[0] >= 1.0, calls
+        assert qs == ["台北101"], qs
         label = pg.text_content("#placeLabel")
         resolved = pg.text_content("#resolved")
-        assert "蘇澳" in label, label
-        assert "已改查" in resolved and "宜蘭縣蘇澳鎮" in resolved, resolved
-        assert "蘇澳鎮, 宜蘭縣" in resolved, resolved
+        assert "台北101" in label, label
+        assert "台北101" in resolved and "已改查" not in resolved, resolved
         names = pg.eval_on_selector_all(".st .st-name", "els => els.map(e => e.textContent)")
-        assert names[0] == "蘇澳", names
-        assert "26.5" in pg.inner_text("#wxNow"), pg.inner_text("#wxNow")
-        pg.screenshot(path=SHOTS + "address_suao.png", full_page=True)
+        assert names[0] == "信義", names
+        assert "28.0" in pg.inner_text("#wxNow"), pg.inner_text("#wxNow")
+        pg.screenshot(path=SHOTS + "address_taipei101.png", full_page=True)
 
         n = len(calls)
         pg.click("#addrBtn")
         pg.wait_for_timeout(500)
         assert len(calls) == n, calls[n:]
         cache = json.loads(pg.evaluate("localStorage.getItem('rainapp.geocodeCache')"))
-        assert cache["宜蘭縣蘇澳鎮八仙路1巷2弄3號"]["results"] == []
-        assert cache["宜蘭縣蘇澳鎮八仙路"]["results"] == []
-        assert cache["宜蘭縣蘇澳鎮"]["results"][0]["lat"] == 24.5946244
+        assert cache["台北101"]["results"][0]["lat"] == 25.0338352
 
         pg.fill("#addrInput", "台北市大安區羅斯福路一段1號")
         pg.click("#addrBtn")
@@ -187,6 +184,8 @@ def main():
         pg.fill("#addrInput", "沒有這個地方xyz")
         pg.click("#addrBtn")
         pg.wait_for_function("() => document.querySelector('#msg').textContent.includes('找不到')", timeout=10000)
+        for a, c in zip(calls, calls[1:]):
+            assert c[0] - a[0] >= 1.0, calls
         assert errors == [], errors
         ctx.close()
 
