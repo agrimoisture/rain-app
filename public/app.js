@@ -230,7 +230,7 @@
       (err) => {
         if (gen !== locateGen) return;
         const why = err.code === 1 ? '沒有定位權限' : err.code === 3 ? '定位逾時' : '無法取得位置';
-        showMsg(why + '。請在上方輸入地址、地標或鄉鎮（例如：宜蘭縣蘇澳鎮八仙路1號），再按「查詢」。');
+        showMsg(why + '。請在上方輸入地址、地標或鄉鎮（例如：台北101），再按「查詢」。');
         $('placeLabel').textContent = current ? current.name : '尚未定位';
         focusAddr();
       },
@@ -548,7 +548,7 @@
         }
         showMsg(netErr
           ? '地址服務暫時連不上，也對不到雨量站的鄉鎮。請稍後再試，或改用下方搜尋站名。'
-          : '找不到這個地方。請試著只輸入鄉鎮或地標，例如：蘇澳、冬山、台北101。');
+          : '找不到這個地方。請試著只輸入鄉鎮或地標，例如：台北101、冬山。');
         $('placeLabel').textContent = current ? current.name : '尚未定位';
         focusAddr();
         return;
