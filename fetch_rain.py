@@ -11,6 +11,7 @@ import os
 import ssl
 import sys
 import tempfile
+import time
 import urllib.request
 from datetime import datetime, timezone, timedelta
 
@@ -32,15 +33,21 @@ def ssl_context():
     return ctx
 
 
-def fetch(key, dataset):
+def fetch(key, dataset, attempts=4):
     url = f"{BASE}{dataset}?Authorization={urllib.request.quote(key)}&format=JSON"
     req = urllib.request.Request(url, headers={"User-Agent": "rain-app/1.0"})
-    try:
-        with urllib.request.urlopen(req, context=ssl_context(), timeout=60) as r:
-            return json.load(r)
-    except Exception as e:  # 不要把含金鑰的 URL 印出來
-        msg = str(e).replace(key, "***")
-        raise RuntimeError(f"{dataset} 抓取失敗：{type(e).__name__}: {msg}") from None
+    last = None
+    for i in range(attempts):
+        try:
+            with urllib.request.urlopen(req, context=ssl_context(), timeout=60) as r:
+                return json.load(r)
+        except Exception as e:  # 不要把含金鑰的 URL 印出來
+            msg = str(e).replace(key, "***")
+            last = f"{dataset} 抓取失敗：{type(e).__name__}: {msg}"
+            print(f"{last}（第 {i + 1}/{attempts} 次）", file=sys.stderr)
+            if i < attempts - 1:
+                time.sleep(5 * (i + 1))  # 暫時性網路錯誤（IncompleteRead、RemoteDisconnected）重試
+    raise RuntimeError(last) from None
 
 
 def num(el, name):
