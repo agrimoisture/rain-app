@@ -28,12 +28,17 @@ jobs:
         with:
           python-version: "3.12"
       - name: 抓取中央氣象署雨量資料
+        id: fetch-rain
+        continue-on-error: true
         env:
           CWA_API_KEY: ${{ secrets.CWA_API_KEY }}
         run: python fetch_rain.py
       - uses: actions/configure-pages@v5
+        if: steps.fetch-rain.outcome == 'success'
       - uses: actions/upload-pages-artifact@v3
+        if: steps.fetch-rain.outcome == 'success'
         with:
           path: public
       - id: deploy
+        if: steps.fetch-rain.outcome == 'success'
         uses: actions/deploy-pages@v4
